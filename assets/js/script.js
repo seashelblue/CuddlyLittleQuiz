@@ -28,7 +28,8 @@ var questions = [
 ]
 
 var currentQuestionIndex = 0;
-var time = 20;
+var time = 40;
+var correct = [];
 
 
 var startBtn = document.getElementById("start-btn");
@@ -38,6 +39,7 @@ var endScreen = document.getElementById("end-screen");
 var questionEl = document.getElementById("question");
 var choicesEl = document.getElementById("choices");
 var timerEl = document.getElementById("timer");
+var feedbackEl = document.getElementById("feedback");
 startBtn.addEventListener("click", startGame);
 
 
@@ -84,11 +86,31 @@ function buildQuestionCard() {
 
 function questionClick() {
     if (this.value !== questions[currentQuestionIndex].answer) {
+   //show right or wrong on screen use setinterval
         console.log("wrong")
+        time -= 15;
+        if (time < 0){
+            time = 0;
+        } 
+        timerEl.textContent = time;
+        feedbackEl.textContent = "wrong"
+   
     } else {
         console.log("right")
+          //show right or wrong on screen use setinterval
+          //create a cprrect array push the question into the array
+          correct.push(questions[currentQuestionIndex]);
+          console.log(correct)
+          feedbackEl.textContent = "right"
     }
+    feedbackEl.setAttribute("class", "feedback")
+    
+    setTimeout(function() {
+        feedbackEl.setAttribute("class", "feedback hide")
+    }, 1000);
+    
     currentQuestionIndex++;
+    
     if (currentQuestionIndex === questions.length) {
         console.log("game over")
         endQuiz();
