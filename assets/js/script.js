@@ -28,8 +28,7 @@ var questions = [
 ]
 
 var currentQuestionIndex = 0;
-var time = 60;
-var timerId = setInterval(clockTick, 1000)
+var time = 20;
 
 
 var startBtn = document.getElementById("start-btn");
@@ -38,20 +37,29 @@ var quizScreen = document.getElementById("quiz-screen");
 var endScreen = document.getElementById("end-screen");
 var questionEl = document.getElementById("question");
 var choicesEl = document.getElementById("choices");
-
+var timerEl = document.getElementById("timer");
 startBtn.addEventListener("click", startGame);
 
+
+// endBtn.addEventListener("click", endGame);
+
+
 function clockTick() {
+    // timerId = setInterval(function () {
     time--;
-    //use text content to show time on screen
+    timerEl.textContent = time;
+    if (time <= 0) {
+        endQuiz();
+    }
 }
 
 function startGame() {
+
+    var timerId = setInterval(clockTick, 1000);
     startScreen.setAttribute("class", "hide");
     quizScreen.removeAttribute("class", "hide");
     buildQuestionCard();
 }
-
 
 function buildQuestionCard() {
     var currentQuestion = questions[currentQuestionIndex];
@@ -75,16 +83,22 @@ function buildQuestionCard() {
 }
 
 function questionClick() {
-    if(this.value !== questions[currentQuestionIndex].answer) {
+    if (this.value !== questions[currentQuestionIndex].answer) {
         console.log("wrong")
     } else {
         console.log("right")
     }
     currentQuestionIndex++;
-    if(currentQuestionIndex === questions.length) {
+    if (currentQuestionIndex === questions.length) {
         console.log("game over")
         endQuiz();
     } else {
-    buildQuestionCard();
+        buildQuestionCard();
     }
+}
+
+function endQuiz() {
+    endScreen.removeAttribute("class", "hide");
+    quizScreen.setAttribute("class", "hide");
+
 }
